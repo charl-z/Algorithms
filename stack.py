@@ -65,7 +65,7 @@ def check_parentheses(astr):
         return True
     return False
 
-<<<<<<< HEAD
+
 '''
 十进制转二进制
 '''
@@ -110,20 +110,9 @@ def infix_to_postfix(astring):
                 stack.pop()
 
 
-
-
-
-
-
-if __name__ == "__main__":
-
-   print decToban(1)
-=======
-
-
 if __name__ == "__main__":
     exs = ['({([()])}){}', '{{[](}}', '({)[}]']
     for ex in exs:
         print check_parentheses(ex)
->>>>>>> 5a17af3141a5ff44c9831674d5027eb469eb5d5f
+
 
