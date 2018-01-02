@@ -89,30 +89,40 @@ def decToban(num):
 4）如果遇到运算符号且栈非空，查看栈顶元素，如果栈顶元素的运算优先级大于或者等于该运算符号，则持续出栈，直到栈顶元素优先级小于该运算符。最后将该元素入栈
 5）如果我们读到了输入的末尾，则将栈中所有元素依次弹出。
 '''
-def infix_to_postfix(astring):
-    symbol = ['(', '+', '-', '*', '/', ')']
-    astring_len = len(astring)
-    stack = Stack(astring_len)
+def infix_to_postfix(infixexpr):
+    # symbol = ['(', '+', '-', '*', '/', ')']
+    symbol = {'*': 2, '/': 2, '+': 1, '-': 1, '(': 0, ')': 0}
+    infixexpr_len = len(infixexpr)
+    stack = Stack(infixexpr_len)
     result = ''
-    for i in astring:
+    for i in infixexpr:
         if i not in symbol:
             result += i
-        if stack.stack_empty() or i == '(' or stack.peek() == '(':
+        elif stack.stack_empty() or i == '(' or stack.peek() == '(':
             stack.push(i)
-        if i == ')':
+        elif i == ')':
             while stack.peek() != '(':
                 result += stack.peek()
                 stack.pop()
             stack.pop()
-        if i == '*' or i == '/':
-            if not stack.stack_empty():
+        else:
+            while not stack.stack_empty() and symbol[stack.peek()] >= symbol[i]:
                 result += stack.peek()
                 stack.pop()
+            stack.push(i)
+    while not stack.stack_empty():
+        result += stack.peek()
+        stack.pop()
+    return result
+
 
 
 if __name__ == "__main__":
-    exs = ['({([()])}){}', '{{[](}}', '({)[}]']
-    for ex in exs:
-        print check_parentheses(ex)
+    infixexpr1 = 'a+b*c+(d*e+f)*g'
+    infixexpr2 = '9+(3-1)*3+6/2'
+
+    print infix_to_postfix(infixexpr1) # postfixexpr1 = abc*+de*f+g*+
+    print infix_to_postfix(infixexpr2) # postfixexpr2 = 931-3*+62/+
+    print infix_to_postfix('( A + B ) * C - ( D - E ) * ( F + G )')
 
 
