@@ -4,7 +4,7 @@ __date__ = '2018/1/2 21:48'
 
 
 class Node:
-    def __init__(self, val, pnext = None):
+    def __init__(self, val = 0, pnext = None):
         self.val = val
         self._next = pnext
 
@@ -16,11 +16,12 @@ class Node:
 class LinkList(object):
     def __init__(self):
         self.length = 0
-        self.head = None
+        self.head = Node()
 
     def clear_list(self):
         # 清空链表，就是将链表所有节点删除
-        pass
+        self.length = 0
+        self.head = None
 
     def empty_list(self):
         # 判断链表是否为空
@@ -30,21 +31,34 @@ class LinkList(object):
         # return 链表长度
         return self.length
 
-    def locate_element(self, node):
-        # 获取node在第几个节点
-        pass
-
-    def prior_element(self, current_node, pre_node):
-        # 获取当前结点的前一个节点
-        pass
-
-    def next_element(self, current_node, pre_node):
-        # 获取当前节点的下一个节点
-        pass
+    def search_element(self, node):
+        # 检索元素是否在链表中
+        item = None
+        # 判断给定的node是否为node的类型，如果不是就转为node的类型
+        if isinstance(node, Node):
+            item = node
+        else:
+            item = Node(node)
+        current_node = self.head
+        while current_node._next:
+            current_node = current_node._next
+            print "----", current_node.val
+            if current_node.val == item.val:
+                return True
+        return False
 
     def list_insert_head(self, node):
         # 在头节点后面插入一个节点
-        pass
+        item = None
+        # 判断给定的node是否为node的类型，如果不是就转为node的类型
+        if isinstance(node, Node):
+            item = node
+        else:
+            item = Node(node)
+        temp_node = self.head._next
+        item._next = temp_node
+        self.head._next = item
+        self.length += 1
 
     def list_insert_tail(self, node):
         # 在尾节点后面插入一个节点
@@ -56,7 +70,7 @@ class LinkList(object):
             item = Node(node)
 
         if not self.head:
-            self.head = item
+            self.head._next = item
             self.length += 1
         else:
             temp_node = self.head
@@ -66,57 +80,74 @@ class LinkList(object):
             temp_node._next = item
             self.length += 1
 
-
-
-
-
-        pass
-
     def list_insert(self, i, node):
-        # 在第i个节点后面插入一个节点
-        pass
+        # 在第i个节点后面插入一个节点，i=0表示第一个节点
+        item = None
+        # 判断给定的node是否为node的类型，如果不是就转为node的类型
+        if i > self.length-1:
+            print "需要插入的节点索引超过了节点长度"
+            return
+        if isinstance(node, Node):
+            item = node
+        else:
+            item = Node(node)
+        current_node = self.head._next
+        j = 0
+        while current_node and j < i:
+            j += 1
+            current_node = current_node._next
+        item._next = current_node._next
+        current_node._next = item
+        self.length += 1
 
     def list_delete(self, index):
-        # 删除第i个节点
-          if self.empty_list():
+        # 删除第i个节点, index=0表示第一个节点(非头结点)
+        itme = Node()
+        if self.empty_list():
+            print "链表为空"
+            return False
+        if index < 0 or index >= self.length:
+            print "索引超出最大长度"
             return False
 
-
-
-    def list_travel(self):
-        # 遍历全部节点数据
-        pass
-
-###########################################
-    # 删除一个节点之后记得要把链表长度减一
-    def delete(self, index):
-        if self.isEmpty():
-            print "this chain table is empty."
-            return
-
-        if index < 0 or index >= self.length:
-            print 'error: out of index'
-            return
-        # 要注意删除第一个节点的情况
-        # 如果有空的头节点就不用这样
-        # 但是我不喜欢弄头节点
-        if index == 0:
-            self.head = self.head._next
-            self.length -= 1
-            return
-
-        # prev为保存前导节点
-        # node为保存当前节点
+        # pre_node为保存前导节点
+        # current_node为保存当前节点
         # 当j与index相等时就
         # 相当于找到要删除的节点
-        j = 0
-        node = self.head
-        prev = self.head
-        while node._next and j < index:
-            prev = node
-            node = node._next
+        j = -1
+        current_node = self.head
+        pre_node = self.head
+        while current_node._next and j < index:
+            pre_node = current_node
+            current_node = current_node._next
             j += 1
-
         if j == index:
-            prev._next = node._next
+            pre_node._next = current_node._next
             self.length -= 1
+
+    def list_travel(self):
+        if self.empty_list():
+            print "Linked list is empty"
+            return
+        node = self.head
+        print "Head -->", node.val
+        while node._next:
+            node = node._next
+            print "-->", node.val
+        print "--> None. Linked node finished"
+
+
+
+if __name__ == "__main__":
+    node1 = Node(1)
+    node2 = Node(2)
+    node3 = Node(3)
+    node5 = Node(5)
+    link = LinkList()
+    link.list_insert_head(node1)
+    link.list_insert_head(node2)
+    link.list_insert_head(node3)
+    link.list_insert_tail(node5)
+    link.list_travel()
+    link.list_delete(3)
+    link.list_travel()
