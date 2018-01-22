@@ -17,50 +17,37 @@ class Solution(object):
         :type l2: ListNode
         :rtype: ListNode
         """
-
-
-class Solution(object):
-    def addTwoNumbers(self, l1, l2):
-        """
-        :type l1: ListNode
-        :type l2: ListNode
-        :rtype: ListNode
-        """
         temp = 0  # 如果有仅为temp=1 否则为0
         current_node1 = l1
         current_node2 = l2
         self.headnode = ListNode(0)
         while (current_node1 and current_node2):
             current_sum = (current_node1.val + current_node2.val + temp) % 10
-            if (current_node1.val + current_node2.val + + temp) > 9:
-                temp = 1
-            else:
-                temp = 0
+            # if (current_node1.val + temp) > 9:
+            #     temp = 1
+            # else:
+            #     temp = 0
+            #可以采用简洁的方式来写
+            temp = 1 if (current_node1.val + current_node2.val + + temp) > 9 else 0
             self.tail_insert(current_sum)
             current_node1 = current_node1.next
             current_node2 = current_node2.next
-
         while current_node1:
             current_sum = (current_node1.val + temp) % 10
             self.tail_insert(current_sum)
 
-            if (current_node1.val + temp) > 9:
-                temp = 1
-            else:
-                temp = 0
+            temp = 1 if (current_node1.val + temp) > 9 else 0
+
             current_node1 = current_node1.next
         while current_node2:
             current_sum = (current_node2.val + temp) % 10
             self.tail_insert(current_sum)
             # temp = 0
-            if (current_node2.val + temp) > 9:
-                temp = 1
-            else:
-                temp = 0
+            temp = 1 if (current_node2.val + temp) > 9 else 0
+
             current_node2 = current_node2.next
         if temp:
             self.tail_insert(temp)
-
         return self.headnode.next  # 从头结点的下一个节点才算实际需要的链表
 
     def tail_insert(self, vlaue):
@@ -69,3 +56,4 @@ class Solution(object):
         while current_node.next:
             current_node = current_node.next
         current_node.next = item
+
